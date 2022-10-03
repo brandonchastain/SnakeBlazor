@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeLib", "SnakeLib\SnakeLib.csproj", "{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeBlazor", "SnakeBlazorProj\SnakeBlazor.csproj", "{287692F1-B442-493C-B33E-FB7DE63EE5C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {665EB6F3-58F0-4211-8BE3-CA96CEAEE482}
+	EndGlobalSection
+EndGlobal
