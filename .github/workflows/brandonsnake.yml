@@ -14,7 +14,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with: # Use latest version of dotnet 6
-          dotnet-version: '5.0.x'# include pre-release of dotnet
+          dotnet-version: '6.0.x'# include pre-release of dotnet
           include-prerelease: true
        
       - name: Build with dotnet # run the command for build the dotnet app
