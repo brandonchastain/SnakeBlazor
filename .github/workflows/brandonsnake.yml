@@ -3,24 +3,24 @@ name: Build and deploy Blazor App
 on:
   push: # trigger when pushing the commits into main branch
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest  # OS or machine to run each job
     steps: # steps - series of tasks to run the job
-      - uses: actions/checkout@v2#Setup .NET Core SDK
+      - uses: actions/checkout@v2 #Setup .NET Core SDK
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with: # Use latest version of dotnet 6
           dotnet-version: '5.0.x'# include pre-release of dotnet
           include-prerelease: true
        
-      - name: Build with dotnet# run the command for build the dotnet app
+      - name: Build with dotnet # run the command for build the dotnet app
         run: dotnet build --configuration Release
 
-      - name: dotnet publish# run the command to pack the build files and dependencies into folder for deployment
+      - name: dotnet publish # run the command to pack the build files and dependencies into folder for deployment
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job#Reference a specific upload artifact
@@ -34,7 +34,7 @@ jobs:
     runs-on: windows-latest
     needs: build #contains the output from the build job#set environment
     environment:
-      name: 'Production'# use deploy-to-webapp step in the job and look at the output of the dependent job. Then find the webapp-url and set it for URL in the environment
+      name: 'Production' # use deploy-to-webapp step in the job and look at the output of the dependent job. Then find the webapp-url and set it for URL in the environment
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -44,7 +44,7 @@ jobs:
           name: .net-app
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp# Reference the deploy web app
+        id: deploy-to-webapp # Reference the deploy web app
         uses: azure/webapps-deploy@v2
         with: #use app name
           app-name: 'brandonsnake'
