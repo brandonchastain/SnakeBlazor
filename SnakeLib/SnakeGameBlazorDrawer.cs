@@ -50,10 +50,10 @@ namespace SnakeLib
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
-            await context.FillTextAsync("B SNAKE", Width - 300, Height - 400);
+            await context.FillTextAsync("B SNAKE", Width - 300, Height - 100);
 
             await context.SetFontAsync("bold 24px Helvetica");
-            await context.FillTextAsync("[CLICK / TAP] START", Width - 325, Height - 300);
+            await context.FillTextAsync("[CLICK / TAP] START", Width - 325, Height - 50);
         }
 
 		private async ValueTask DrawGameInProgress(Canvas2DContext context)
