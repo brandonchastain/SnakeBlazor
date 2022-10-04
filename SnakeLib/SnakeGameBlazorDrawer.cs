@@ -49,7 +49,8 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-			await context.FillTextAsync("B-Snake.\nEnter to start.\nESC to pause.", Width / 2, Height / 2);
+            await context.SetFontAsync("24px Courier New");
+            await context.FillTextAsync("B-Snake.\nEnter to start.\nESC to pause.", Width / 2, Height / 2);
 		}
 
 		private async ValueTask DrawGameInProgress(Canvas2DContext context)
@@ -60,6 +61,7 @@ namespace SnakeLib
 			await context.StrokeRectAsync(1, 1, Width - 1, Height - 1);
 			await game.Snake.Draw(context);
 			await game.Food.Draw(context);
+			await context.SetFontAsync("24px Courier New");
 			await context.FillTextAsync($"Score: {game.Snake.Size}", 350, 350);
 		}
 
@@ -68,7 +70,8 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-			await context.FillTextAsync("B-Snake.\nPAUSED", Width / 2, Height / 2);
+            await context.SetFontAsync("24px Courier New");
+            await context.FillTextAsync("B-Snake.\nPAUSED", Width / 2, Height / 2);
 		}
 
 		private async ValueTask DrawGameOver(Canvas2DContext context)
@@ -76,7 +79,8 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-			await context.FillTextAsync("B-Snake.\nGAME OVER", Width / 2, Height / 2);
+            await context.SetFontAsync("24px Courier New");
+            await context.FillTextAsync("B-Snake.\nGAME OVER", Width / 2, Height / 2);
 		}
 	}
 }

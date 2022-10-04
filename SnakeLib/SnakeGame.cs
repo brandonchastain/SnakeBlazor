@@ -19,8 +19,7 @@ namespace SnakeLib
 		{
 			Food = new Food(4 * SegSize, 4 * SegSize);
 			playerInput = new PlayerInput();
-			Snake = new Snake();
-			Snake.Add(15 * SegSize, 15 * SegSize);
+			Snake = BuildNewSnake();
 		}
 
 		public GameState GameState { get; private set; } = GameState.NotStarted;
@@ -40,6 +39,23 @@ namespace SnakeLib
 		//		}
 		//	});
 		//}
+
+		private Snake BuildNewSnake()
+		{
+            var res = new Snake();
+			int i = 0;
+            for (; i < 2; i++)
+            {
+                res.Add((2 + i) * SegSize, 2 * SegSize);
+            }
+			i--;
+
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    res.Add((2 + i) * SegSize, (2 + j) * SegSize);
+            //}
+            return res;
+        }
 
 		public void Resize(int width, int height)
 		{
@@ -100,10 +116,9 @@ namespace SnakeLib
 			{
 				// reset the game
 
-				Snake = new Snake();
-				Snake.Add(10 * SnakeSegment.RectSize, 10 * SnakeSegment.RectSize);
-				//delay = StartingDelay;
-			}
+				Snake = BuildNewSnake();
+                //delay = StartingDelay;
+            }
 
 			GameState = GameState.InProgress;
 		}

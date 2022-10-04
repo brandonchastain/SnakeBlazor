@@ -18,14 +18,13 @@
 </div>
 
 @code{
-    private const int InitialGameSpeed = 140;
+    private const int InitialGameSpeed = 120;
     private int gameSpeed = InitialGameSpeed;
 
 
     private int cachedScore;
     private SnakeGame Game = new SnakeGame();
     private SnakeGameBlazorDrawer Drawer;
-    private bool keyPressed = false;
     private bool forceRenderOnce;
 
     private Canvas2DContext ctx;
@@ -51,7 +50,6 @@
     public void OnKeyDown(KeyboardEventArgs e)
     {
         Game.playerInput.OnKeyDown(e.Code);
-        keyPressed = true;
 
         forceRenderOnce = true;
     }
