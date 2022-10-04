@@ -11,18 +11,22 @@
     @onclick="Clicked"
     @onkeydown="OnKeyDown">
 
-    <div id="canvasHolder" style="position: fixed; background-color: magenta; width: 100%; height: 100%" >
+    <div id="canvasHolder" style="position: fixed; background-color: black; width: 100%; height: 100%" >
         <BECanvas Width="600" Height="400" @ref="_canvasReference"></BECanvas>
     </div>
 
 </div>
 
 @code{
-    private int gameSpeed = 120;
+    private const int InitialGameSpeed = 140;
+    private int gameSpeed = InitialGameSpeed;
+
 
     private int cachedScore;
     private SnakeGame Game = new SnakeGame();
     private SnakeGameBlazorDrawer Drawer;
+    private bool keyPressed = false;
+    private bool forceRenderOnce;
 
     private Canvas2DContext ctx;
     protected BECanvasComponent _canvasReference;
@@ -44,45 +48,47 @@
         //Game.Run(); // multithreading is not supported in Blazor! :O
     }
 
-    [JSInvokable]
     public void OnKeyDown(KeyboardEventArgs e)
     {
         Game.playerInput.OnKeyDown(e.Code);
-        LastRender = default(DateTimeOffset);
+        keyPressed = true;
+
+        forceRenderOnce = true;
     }
 
-    [JSInvokable]
     public void Clicked()
     {
         Game.playerInput.SetEnterPressed();
-        LastRender = default(DateTimeOffset);
     }
 
     [JSInvokable]
-    public void ResizeInBlazor(double width, double height) => Game.Resize((int)Math.Min(width, height));
+    public void ResizeInBlazor(double width, double height) => Game.Resize((int)width, (int)height);
 
     [JSInvokable]
     public async ValueTask RenderInBlazor(float timeStamp)
     {
         if (Game.Score != cachedScore)
         {
-            if (Game.Score == 0)
+            if (Game.Score == 1)
             {
-                gameSpeed = 120;
+                gameSpeed = InitialGameSpeed;
             }
-            else if (Game.Score % 5 == 0)
+            else
             {
-                gameSpeed = Math.Max(gameSpeed - 5, 15);
+                //gameSpeed = Math.Max(gameSpeed - 2, 15);
             }
             cachedScore = Game.Score;
         }
+
+        Game.ReadPlayerInput();
+
         if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))
         {
             Game.Update();
             LastGameTick = DateTimeOffset.Now;
         }
 
-        if (DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(gameSpeed))
+        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(15))
         {
             await this.ctx.BeginBatchAsync();
             await Drawer.Draw(this.ctx);
@@ -90,6 +96,7 @@
 
             double fps = 1.0 / (DateTimeOffset.Now - LastRender).TotalSeconds;
             LastRender = DateTimeOffset.Now;
+            forceRenderOnce = false;
         }
     }
 }

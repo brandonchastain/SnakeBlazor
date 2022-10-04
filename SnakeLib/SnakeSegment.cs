@@ -9,7 +9,7 @@ namespace SnakeLib
 {
 	public class SnakeSegment : TileObject, ICanvasDrawable
 	{
-		public const int RectSize = 20;
+		public const int RectSize = 50;
 
 		public SnakeSegment(int x, int y)
 		{

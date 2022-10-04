@@ -26,23 +26,17 @@ namespace SnakeLib
 
 		public void Add(int x, int y)
 		{
-			lock (lockobject)
-			{
-				snakeBody.Add((x, y));
-				parts.Insert(0, new SnakeSegment(x, y));
-				Size++;
-			}
+			snakeBody.Add((x, y));
+			parts.Insert(0, new SnakeSegment(x, y));
+			Size++;
 		}
 
 		public void RemoveTail()
 		{
-			lock (lockobject)
-			{
-				var seg = parts[Size - 1];
-				snakeBody.Remove((seg.x, seg.y));
-				parts.RemoveAt(Size - 1);
-				Size--;
-			}
+			var seg = parts[Size - 1];
+			snakeBody.Remove((seg.x, seg.y));
+			parts.RemoveAt(Size - 1);
+			Size--;
 		}
 
 		public bool Update(Food food)
@@ -56,7 +50,7 @@ namespace SnakeLib
 			switch (Direction)
 			{
 				case Direction.Right:
-					if (parts[0].x + SegSize >= SnakeGame.Size)
+					if (parts[0].x + SegSize >= SnakeGame.Width)
 					{
 						return false;
 					}
@@ -80,7 +74,7 @@ namespace SnakeLib
 					nextY = parts[0].y - SegSize;
 					break;
 				case Direction.Down:
-					if (parts[0].y + SegSize >= SnakeGame.Size)
+					if (parts[0].y + SegSize >= SnakeGame.Height)
 					{
 						return false;
 					}
@@ -95,8 +89,8 @@ namespace SnakeLib
 			if (nextY == food.y && nextX == food.x)
 			{
 				match = true;
-				food.x = SegSize + SegSize * random.Next((SnakeGame.Size - SegSize) / SegSize);
-				food.y = SegSize + SegSize * random.Next((SnakeGame.Size - SegSize) / SegSize);
+				food.x = SegSize + SegSize * random.Next((SnakeGame.Width - SegSize) / SegSize);
+				food.y = SegSize + SegSize * random.Next((SnakeGame.Height - SegSize) / SegSize);
 			}
 
 			if (snakeBody.Contains((nextX, nextY)))

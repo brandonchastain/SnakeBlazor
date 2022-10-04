@@ -7,6 +7,7 @@ https://docs.microsoft.com/en-us/aspnet/core/migration/31-to-50?view=aspnetcore-
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>

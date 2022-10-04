@@ -6,13 +6,14 @@ namespace SnakeLib
 {
 	public class SnakeGame
 	{
-		public static int Size = 400;
-		private const int SegSize = SnakeSegment.RectSize;
-		private const int StartingDelay = 120;
-		private const double SpeedMultiplier = 1.5;
+		public static int Height = 400;
+		public static int Width = 400;
+        private const int SegSize = SnakeSegment.RectSize;
+		//private const int StartingDelay = 120;
+		//private const double SpeedMultiplier = 1.5;
 
 		public readonly PlayerInput playerInput;
-		private int delay = StartingDelay;
+		//private int delay = StartingDelay;
 
 		public SnakeGame()
 		{
@@ -40,23 +41,27 @@ namespace SnakeLib
 		//	});
 		//}
 
-		public void Resize(int size)
+		public void Resize(int width, int height)
 		{
-			Size = size;
+			Width = width;
+			Height = height;
 		}
 
-		public void Update()
-		{
-			if (playerInput.GetEscapePressed())
+		public void ReadPlayerInput()
+        {
+            if (playerInput.GetEscapePressed())
             {
                 PauseIfNeeded();
             }
 
-			if (playerInput.GetEnterPressed())
-			{
-				GoInProgressIfNeeded();
+            if (playerInput.GetEnterPressed())
+            {
+                GoInProgressIfNeeded();
             }
+        }
 
+        public void Update()
+		{
             if (GameState != GameState.InProgress) return;
 			//in-progress
 
@@ -69,7 +74,7 @@ namespace SnakeLib
 				GameState = GameState.GameOver;
 			}
 
-			delay = StartingDelay - Math.Min(StartingDelay - 1, (int)(Snake.Size * SpeedMultiplier));
+			//delay = StartingDelay - Math.Min(StartingDelay - 1, (int)(Snake.Size * SpeedMultiplier));
 		}
 
 		private void PauseIfNeeded()
@@ -97,7 +102,7 @@ namespace SnakeLib
 
 				Snake = new Snake();
 				Snake.Add(10 * SnakeSegment.RectSize, 10 * SnakeSegment.RectSize);
-				delay = StartingDelay;
+				//delay = StartingDelay;
 			}
 
 			GameState = GameState.InProgress;
