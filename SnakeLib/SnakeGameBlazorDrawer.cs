@@ -49,9 +49,12 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-            await context.SetFontAsync("24px Courier New");
-            await context.FillTextAsync("B-Snake.\nEnter to start.\nESC to pause.", Width / 2, Height / 2);
-		}
+            await context.SetFontAsync("bold 48px Helvetica");
+            await context.FillTextAsync("B SNAKE", Width - 300, Height - 400);
+
+            await context.SetFontAsync("bold 24px Helvetica");
+            await context.FillTextAsync("[CLICK / TAP] START", Width - 325, Height - 300);
+        }
 
 		private async ValueTask DrawGameInProgress(Canvas2DContext context)
 		{
@@ -61,8 +64,8 @@ namespace SnakeLib
 			await context.StrokeRectAsync(1, 1, Width - 1, Height - 1);
 			await game.Snake.Draw(context);
 			await game.Food.Draw(context);
-			await context.SetFontAsync("24px Courier New");
-			await context.FillTextAsync($"Score: {game.Snake.Size}", 350, 350);
+			await context.SetFontAsync("bold 48px Helvetica");
+			await context.FillTextAsync($"SCORE {game.Snake.Size}", Width - 300, Height - 100);
 		}
 
 		private async ValueTask DrawPaused(Canvas2DContext context)
@@ -70,8 +73,8 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-            await context.SetFontAsync("24px Courier New");
-            await context.FillTextAsync("B-Snake.\nPAUSED", Width / 2, Height / 2);
+            await context.SetFontAsync("bold 48px Helvetica");
+            await context.FillTextAsync("PAUSED", Width - 300, Height - 100);
 		}
 
 		private async ValueTask DrawGameOver(Canvas2DContext context)
@@ -79,8 +82,8 @@ namespace SnakeLib
 			await context.SetFillStyleAsync("black");
 			await context.FillRectAsync(0, 0, Width, Height);
 			await context.SetFillStyleAsync("white");
-            await context.SetFontAsync("24px Courier New");
-            await context.FillTextAsync("B-Snake.\nGAME OVER", Width / 2, Height / 2);
+            //await context.SetFontAsync("bold 48px Helvetica");
+            await context.FillTextAsync("GAME OVER", Width - 350, Height - 100);
 		}
 	}
 }

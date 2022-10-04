@@ -56,7 +56,35 @@
 
     public void Clicked()
     {
-        Game.playerInput.SetEnterPressed();
+        Game.playerInput.SetEscapePressed();
+    }
+
+    [JSInvokable]
+    public void RightSwipe()
+    {
+        Game.playerInput.OnKeyDown("ArrowLeft");
+        forceRenderOnce = true;
+    }
+    [JSInvokable]
+    public void LeftSwipe()
+    {
+        Game.playerInput.OnKeyDown("ArrowRight");
+        forceRenderOnce = true;
+
+    }
+    [JSInvokable]
+    public void UpSwipe()
+    {
+        Game.playerInput.OnKeyDown("ArrowDown");
+        forceRenderOnce = true;
+
+    }
+    [JSInvokable]
+    public void DownSwipe()
+    {
+        Game.playerInput.OnKeyDown("ArrowUp");
+        forceRenderOnce = true;
+
     }
 
     [JSInvokable]
@@ -65,19 +93,6 @@
     [JSInvokable]
     public async ValueTask RenderInBlazor(float timeStamp)
     {
-        if (Game.Score != cachedScore)
-        {
-            if (Game.Score == 1)
-            {
-                gameSpeed = InitialGameSpeed;
-            }
-            else
-            {
-                //gameSpeed = Math.Max(gameSpeed - 2, 15);
-            }
-            cachedScore = Game.Score;
-        }
-
         Game.ReadPlayerInput();
 
         if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))

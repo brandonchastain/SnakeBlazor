@@ -1,9 +1,6 @@
 ﻿using Blazor.Extensions.Canvas.Canvas2D;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SnakeLib
@@ -11,7 +8,6 @@ namespace SnakeLib
 	public class Snake : ICanvasDrawable
 	{
 		private const int SegSize = SnakeSegment.RectSize;
-		private object lockobject = new object();
 		private IList<SnakeSegment> parts = new List<SnakeSegment>();
 		private Direction Direction = Direction.Left;
 		private Random random = new Random();

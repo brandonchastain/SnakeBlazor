@@ -55,6 +55,15 @@ namespace SnakeLib
 
 		public void ReadPlayerInput()
         {
+			if (GameState == GameState.NotStarted)
+			{
+				if (playerInput.GetEscapePressed() || playerInput.GetEnterPressed())
+				{
+					GoInProgressIfNeeded();
+				}
+				return;
+			}
+
             if (playerInput.GetEscapePressed())
             {
                 PauseIfNeeded();
@@ -93,6 +102,11 @@ namespace SnakeLib
 			{
 				GameState = GameState.InProgress;
 			}
+			else if (GameState == GameState.GameOver)
+			{
+				GameState = GameState.NotStarted;
+				Snake = BuildNewSnake();
+			}
 		}
 
 		private void GoInProgressIfNeeded()
@@ -105,9 +119,10 @@ namespace SnakeLib
 			if (GameState == GameState.GameOver)
 			{
 				// reset the game
-
+				GameState = GameState.NotStarted;
 				Snake = BuildNewSnake();
-                //delay = StartingDelay;
+				//delay = StartingDelay;
+				return;
             }
 
 			GameState = GameState.InProgress;

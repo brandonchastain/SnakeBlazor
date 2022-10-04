@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SnakeLib
 {
     public class PlayerInput
@@ -24,6 +19,10 @@ namespace SnakeLib
         public void SetEnterPressed()
         {
             this.EnterPressed = true;
+        }
+        public void SetEscapePressed()
+        {
+            this.EscapePressed = true;
         }
 
         public bool GetEscapePressed()
