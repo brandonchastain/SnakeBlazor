@@ -43,17 +43,7 @@ namespace SnakeLib
 		private Snake BuildNewSnake()
 		{
             var res = new Snake();
-			int i = 0;
-            for (; i < 2; i++)
-            {
-                res.Add((2 + i) * SegSize, 2 * SegSize);
-            }
-			i--;
-
-            //for (int j = 0; j < 10; j++)
-            //{
-            //    res.Add((2 + i) * SegSize, (2 + j) * SegSize);
-            //}
+            res.Add(10 * SegSize, 10 * SegSize);
             return res;
         }
 
