@@ -1,40 +1,53 @@
-name: Build and deploy .NET Core application to Web App brandonsnake
+name: Build and deploy Blazor App
+# use this 'on' to trigger the workflow
 on:
-  push:
+  push: # trigger when pushing the commits into main branch
     branches:
-    - master
-env:
-  AZURE_WEBAPP_NAME: brandonsnake
-  AZURE_WEBAPP_PACKAGE_PATH: SnakeBlazorProj\published
-  CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 5.0.x
-  WORKING_DIRECTORY: SnakeBlazorProj
+      - master
+  workflow_dispatch:
+
 jobs:
   build:
+    runs-on: windows-latest  # OS or machine to run each job
+    steps: # steps - series of tasks to run the job
+      - uses: actions/checkout@v2 #Setup .NET Core SDK
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with: # Use latest version of dotnet 6
+          dotnet-version: '6.0.x'# include pre-release of dotnet
+          include-prerelease: true
+       
+      - name: Build with dotnet # run the command for build the dotnet app
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish # run the command to pack the build files and dependencies into folder for deployment
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment job#Reference a specific upload artifact
+        uses: actions/upload-artifact@v2
+
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
     runs-on: windows-latest
+    needs: build #contains the output from the build job#set environment
+    environment:
+      name: 'Production' # use deploy-to-webapp step in the job and look at the output of the dependent job. Then find the webapp-url and set it for URL in the environment
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1.8.0
-      with:
-        include-prerelease: True
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Restore
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
-    - name: Build
-      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-    - name: Publish
-      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
-    - name: Deploy to Azure WebApp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.brandonsnake_FFFF }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Publish Artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Download artifact from build job#Reference a specific download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp # Reference the deploy web app
+        uses: azure/webapps-deploy@v2
+        with: #use app name
+          app-name: 'brandonsnake'
+          slot-name: 'Production'#use publish profile from the GitHub secrets
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
