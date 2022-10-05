@@ -108,7 +108,12 @@
             await this.ctx.EndBatchAsync();
 
             double fps = 1.0 / (DateTimeOffset.Now - LastRender).TotalSeconds;
-            LastRender = DateTimeOffset.Now;
+
+            if (!forceRenderOnce)
+            {
+                LastRender = DateTimeOffset.Now;
+            }
+
             forceRenderOnce = false;
         }
     }
