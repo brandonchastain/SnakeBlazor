@@ -1,6 +1,7 @@
 ﻿using Blazor.Extensions.Canvas.Canvas2D;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SnakeLib
@@ -17,7 +18,27 @@ namespace SnakeLib
 
 		public void SetDirection(Direction dir)
 		{
-			Direction = dir;
+			if (Size == 1 || dir != OppositeDirection(Direction))
+			{
+				Direction = dir;
+			}
+		}
+
+		private Direction OppositeDirection(Direction d)
+		{
+			switch (d)
+			{
+				case Direction.Up:
+					return Direction.Down;
+				case Direction.Down:
+					return Direction.Up;
+				case Direction.Left:
+					return Direction.Right;
+				case Direction.Right:
+					return Direction.Left;
+				default:
+					throw new Exception("unspoorted dir");
+			}
 		}
 
 		public void Add(int x, int y)
