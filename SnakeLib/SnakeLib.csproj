@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.536" />
-    <PackageReference Include="Microsoft.Maui.Dependencies" Version="6.0.536" />
-    <PackageReference Include="Microsoft.Maui.Extensions" Version="6.0.536" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.194" />
+    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.540" />
+    <PackageReference Include="Microsoft.Maui.Dependencies" Version="6.0.540" />
+    <PackageReference Include="Microsoft.Maui.Extensions" Version="6.0.540" />
   </ItemGroup>
 
 </Project>

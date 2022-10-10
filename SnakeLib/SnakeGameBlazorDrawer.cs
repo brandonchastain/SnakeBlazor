@@ -67,7 +67,8 @@ namespace SnakeLib
 			await context.StrokeRectAsync(1, 1, Width - 1, Height - 1);
 			await game.Snake.Draw(context);
 			await game.Food.Draw(context);
-			await context.SetFontAsync("bold 48px Helvetica");
+            await context.SetFillStyleAsync("green");
+            await context.SetFontAsync("bold 48px Helvetica");
 			await context.FillTextAsync($"SCORE {game.Snake.Size}", Width - 300, Height - 100);
 		}
 

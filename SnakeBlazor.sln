@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeLib", "SnakeLib\SnakeL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeBlazor", "SnakeBlazorProj\SnakeBlazor.csproj", "{287692F1-B442-493C-B33E-FB7DE63EE5C7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp1.Server", "Server\BlazorApp1.Server.csproj", "{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{287692F1-B442-493C-B33E-FB7DE63EE5C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,14 +6,15 @@ https://docs.microsoft.com/en-us/aspnet/core/migration/31-to-50?view=aspnetcore-
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PublishTrimmed>false</PublishTrimmed>
+    <TargetFramework>net6.0</TargetFramework>
+    <!--<PublishTrimmed>false</PublishTrimmed>-->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.1" PrivateAssets="all" />
+    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.9" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.540" />
   </ItemGroup>
 
   <ItemGroup>
