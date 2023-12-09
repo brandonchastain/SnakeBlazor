@@ -5,9 +5,9 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeLib", "SnakeLib\SnakeLib.csproj", "{4DE7CAB2-B9A0-4819-A2C0-12E38B2BAAB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeBlazor", "SnakeBlazorProj\SnakeBlazor.csproj", "{287692F1-B442-493C-B33E-FB7DE63EE5C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorClient", "BlazorClient\BlazorClient.csproj", "{287692F1-B442-493C-B33E-FB7DE63EE5C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp1.Server", "Server\BlazorApp1.Server.csproj", "{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer", "BlazorServer\BlazorServer.csproj", "{99CF9E30-DFCA-4CA3-89E0-FC2770D4E860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

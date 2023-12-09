@@ -11,6 +11,7 @@ namespace SnakeLib
 		NotStarted,
 		InProgress,
 		Paused,
+		HighScores,
 		GameOver
 	}
 }

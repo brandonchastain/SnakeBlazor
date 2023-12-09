@@ -37,6 +37,9 @@ namespace SnakeLib
 					await DrawGameInProgress(context);
                     await DrawPaused(context);
 					break;
+				case GameState.HighScores:
+					await DrawHighScores(context);
+					break;
 				case GameState.GameOver:
 					await DrawGameOver(context);
 					break;
@@ -53,10 +56,11 @@ namespace SnakeLib
             await context.StrokeRectAsync(1, 1, Width - 1, Height - 1);
             await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
-            await context.FillTextAsync("B SNAKE", Width - 300, Height - 100);
+            await context.FillTextAsync("B SNAKE", Width - 300, Height - 150);
 
             await context.SetFontAsync("bold 24px Helvetica");
-            await context.FillTextAsync("[CLICK / TAP] START", Width - 325, Height - 50);
+            await context.FillTextAsync("[CLICK / TAP] START", Width - 325, Height - 100);
+            await context.FillTextAsync("[H] HIGH SCORES", Width - 325, Height - 50);
         }
 
 		private async ValueTask DrawGameInProgress(Canvas2DContext context)
@@ -84,6 +88,17 @@ namespace SnakeLib
             await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
             await context.FillTextAsync("GAME OVER", Width - 385, Height - 50);
-		}
-	}
+        }
+
+        private async ValueTask DrawHighScores(Canvas2DContext context)
+        {
+            await context.SetFillStyleAsync("black");
+            await context.FillRectAsync(0, 0, Width, Height);
+            await context.SetFillStyleAsync("white");
+            await context.SetFontAsync("bold 48px Helvetica");
+            await context.FillTextAsync("HIGH SCORES", 100, 100);
+            await context.FillTextAsync("BCX - 200", 150, 150);
+            await context.FillTextAsync($"YOU - {game.Snake.Size}", 150, 150);
+        }
+    }
 }

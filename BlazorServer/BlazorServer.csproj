@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SnakeBlazorProj\SnakeBlazor.csproj" />
+    <ProjectReference Include="..\BlazorClient\BlazorClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

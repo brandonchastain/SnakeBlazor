@@ -56,6 +56,12 @@ namespace SnakeLib
 			Size--;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="food"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public bool Update(Food food)
 		{
 			// check if snake will consume food
@@ -67,36 +73,37 @@ namespace SnakeLib
 			switch (Direction)
 			{
 				case Direction.Right:
-					if (parts[0].x + SegSize >= SnakeGame.Width)
+                    nextX = parts[0].x + SegSize;
+                    if (nextX >= SnakeGame.Width)
 					{
-						return false;
+						nextX = 0;
 					}
 
-					nextX = parts[0].x + SegSize;
 					break;
 				case Direction.Left:
-					if (parts[0].x - SegSize < 0)
+                    nextX = parts[0].x - SegSize;
+                    if (nextX < 0)
 					{
-						return false;
+						nextX = (SnakeGame.Width / SegSize) * SegSize;
 					}
 
-					nextX = parts[0].x - SegSize;
 					break;
 				case Direction.Up:
-					if (parts[0].y - SegSize < 0)
-					{
-						return false;
-					}
 
-					nextY = parts[0].y - SegSize;
+                    nextY = parts[0].y - SegSize;
+                    if (nextY < 0)
+					{
+						nextY = (SnakeGame.Height / SegSize) * SegSize;
+                    }
 					break;
 				case Direction.Down:
-					if (parts[0].y + SegSize >= SnakeGame.Height)
+
+                    nextY = parts[0].y + SegSize;
+                    if (nextY >= SnakeGame.Height)
 					{
-						return false;
+						nextY = 0;
 					}
 
-					nextY = parts[0].y + SegSize;
 					break;
 				default:
 					throw new Exception("unrecognized direction");

@@ -9,11 +9,10 @@ namespace SnakeLib
 		public static int Height = 400;
 		public static int Width = 400;
         private const int SegSize = SnakeSegment.RectSize;
-		//private const int StartingDelay = 120;
-		//private const double SpeedMultiplier = 1.5;
 
 		public readonly PlayerInput playerInput;
-		//private int delay = StartingDelay;
+
+		private GameState prevState;
 
 		public SnakeGame()
 		{
@@ -61,6 +60,10 @@ namespace SnakeLib
 				{
 					GoInProgressIfNeeded();
 				}
+				else if (playerInput.GetHPressed())
+				{
+					GoHighScoresIfNeeded();
+				}
 				return;
 			}
 
@@ -73,6 +76,11 @@ namespace SnakeLib
             {
                 GoInProgressIfNeeded();
             }
+
+			if (playerInput.GetHPressed())
+			{
+				GoHighScoresIfNeeded();
+			}
         }
 
         public void Update()
@@ -91,6 +99,19 @@ namespace SnakeLib
 
 			//delay = StartingDelay - Math.Min(StartingDelay - 1, (int)(Snake.Size * SpeedMultiplier));
 		}
+
+		private void GoHighScoresIfNeeded()
+		{
+            if (GameState == GameState.NotStarted || GameState == GameState.InProgress)
+            {
+				prevState = GameState;
+                GameState = GameState.HighScores;
+            }
+			else if (GameState == GameState.HighScores)
+			{
+				GameState = prevState;
+			}
+        }
 
 		private void PauseIfNeeded()
 		{

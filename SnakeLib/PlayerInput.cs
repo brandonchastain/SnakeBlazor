@@ -8,13 +8,11 @@ namespace SnakeLib
         public PlayerInput()
         {
             currentDirection = Direction.Down;
-
-            //Task.Run(() => hook.Run()); // multithreading not supported by blazor webassembly
         }
 
-        //public delegate void Notify();
         public bool EscapePressed;
         public bool EnterPressed;
+        public bool HPressed;
 
         public void SetEnterPressed()
         {
@@ -36,6 +34,13 @@ namespace SnakeLib
         {
             var oldVal = EnterPressed;
             EnterPressed = false;
+            return oldVal;
+        }
+
+        public bool GetHPressed()
+        {
+            var oldVal = HPressed;
+            HPressed = false;
             return oldVal;
         }
 
@@ -61,6 +66,10 @@ namespace SnakeLib
                 case "ArrowDown":
                     currentDirection = Direction.Down;
                     break;
+                case "KeyH":
+                    HPressed = true;
+                    break;
+
                 default:
                     throw new Exception(keyCode);
             }

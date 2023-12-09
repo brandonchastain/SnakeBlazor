@@ -18,6 +18,7 @@
 </div>
 
 @code{
+    // Todo: move logic back into Game class
     private const int InitialGameSpeed = 160;
     private int gameSpeed = InitialGameSpeed;
     private SnakeGame Game = new SnakeGame();
@@ -46,13 +47,16 @@
 
     public void OnKeyDown(KeyboardEventArgs e)
     {
+        // Todo: move logic back into Game class
         Game.playerInput.OnKeyDown(e.Code);
 
         forceRenderOnce = true;
+
     }
 
     public void Clicked()
     {
+        // Todo: move logic back into Game class
         Game.playerInput.SetEnterPressed();
     }
 
@@ -61,6 +65,11 @@
     {
         Game.playerInput.OnKeyDown("ArrowLeft");
         forceRenderOnce = true;
+        // Todo: move logic back into Game class
+        // Game.handlePlayerKey("ArrowLeft");
+        // -> in handlePlayerKey:
+        //    this.playerInput.OnKeyDown("arrowLeft");
+        //    forceRenderOnce = true
     }
     [JSInvokable]
     public void LeftSwipe()
@@ -90,6 +99,7 @@
     [JSInvokable]
     public async ValueTask RenderInBlazor(float timeStamp)
     {
+        // Todo: move logic back into Game class
         Game.ReadPlayerInput();
 
         if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))
@@ -98,7 +108,7 @@
             LastGameTick = DateTimeOffset.Now;
         }
 
-        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(15))
+        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(gameSpeed / 2))
         {
             await this.ctx.BeginBatchAsync();
             await Drawer.Draw(this.ctx);

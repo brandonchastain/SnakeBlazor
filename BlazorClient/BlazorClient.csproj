@@ -7,7 +7,8 @@ https://docs.microsoft.com/en-us/aspnet/core/migration/31-to-50?view=aspnetcore-
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <!--<PublishTrimmed>false</PublishTrimmed>-->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
