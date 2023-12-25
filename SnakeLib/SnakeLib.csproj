@@ -9,7 +9,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.540" />
     <PackageReference Include="Microsoft.Maui.Dependencies" Version="6.0.540" />
     <PackageReference Include="Microsoft.Maui.Extensions" Version="6.0.540" />
-    <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
