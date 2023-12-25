@@ -97,8 +97,8 @@ namespace SnakeLib
             await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
             await context.FillTextAsync("HIGH SCORES", 100, 100);
-            await context.FillTextAsync("BCX - 200", 150, 150);
-            await context.FillTextAsync($"YOU - {game.Snake.Size}", 150, 150);
+            await context.FillTextAsync("B   - 200", 150, 150);
+            await context.FillTextAsync($"YOU - {game.Snake.Size}", 200, 150);
         }
     }
 }
