@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using SnakeLib.Contracts;
+using SnakeLib.Data;
 
 namespace SnakeLib
 {
@@ -14,11 +19,17 @@ namespace SnakeLib
 
 		private GameState prevState;
 
+
+		private HighScoreRepository repo = HighScoreRepository.Instance;
+		private HttpClient httpClient = new HttpClient();
+		private IEnumerable<HighScore> highScores;
+
 		public SnakeGame()
 		{
 			Food = new Food(4 * SegSize, 4 * SegSize);
 			playerInput = new PlayerInput();
 			Snake = BuildNewSnake();
+			highScores = new List<HighScore>();
 		}
 
 		public GameState GameState { get; private set; } = GameState.NotStarted;
@@ -83,8 +94,15 @@ namespace SnakeLib
 			}
         }
 
-        public void Update()
+        public async ValueTask Update()
 		{
+			if (GameState == GameState.Initializing)
+			{
+				IEnumerable<HighScore> snakeScores = await httpClient.GetFromJsonAsync<IEnumerable<HighScore>>("http://snakescores.azurewebsites.net/highscore/gethighscores");
+				highScores = snakeScores;
+				GameState = GameState.InProgress;
+			}
+
             if (GameState != GameState.InProgress) return;
 			//in-progress
 
@@ -98,6 +116,11 @@ namespace SnakeLib
 			}
 
 			//delay = StartingDelay - Math.Min(StartingDelay - 1, (int)(Snake.Size * SpeedMultiplier));
+		}
+
+		public IEnumerable<HighScore> GetHighScores()
+		{
+			return highScores;
 		}
 
 		private void GoHighScoresIfNeeded()
@@ -132,6 +155,12 @@ namespace SnakeLib
 
 		private void GoInProgressIfNeeded()
 		{
+			if (GameState == GameState.NotStarted)
+			{
+				GameState = GameState.Initializing;
+				return;
+			}
+
 			if (GameState == GameState.InProgress)
 			{
 				return;

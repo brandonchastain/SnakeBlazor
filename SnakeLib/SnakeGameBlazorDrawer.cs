@@ -2,6 +2,7 @@
 using SnakeLib.Contracts;
 using SnakeLib.Data;
 using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace SnakeLib
 		private static int Height = SnakeGame.Height;
 
 		private SnakeGame game;
-		private HighScoreRepository repo = HighScoreRepository.Instance;
+		private HttpClient httpClient = new HttpClient();
 
 		public SnakeGameBlazorDrawer(SnakeGame g)
 		{
@@ -100,14 +101,15 @@ namespace SnakeLib
             await context.FillRectAsync(0, 0, Width, Height);
             await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
-			IEnumerable<HighScore> scores = repo.GetHighScores();
+			IEnumerable<HighScore> scores = game.GetHighScores();
             await context.FillTextAsync("HIGH SCORES", 100, 100);
 			int y = 100;
 			foreach (var score in scores)
 			{
-				await context.FillTextAsync($"{score.Username} - {score.Score}", 100, y);
 				y += 50;
+				await context.FillTextAsync($"{score.Username} - {score.Score}", 100, y);
 			}
+			y += 50;
             await context.FillTextAsync($"YOU - {game.Snake.Size}", 100, y);
         }
     }

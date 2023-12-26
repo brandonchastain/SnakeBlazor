@@ -11,7 +11,7 @@ public class HighScoreController : ControllerBase
 {
     private const string StorageUri = "https://snakescores.table.core.windows.net/";
     private const string AccountName = "snakescores";
-    private const string StorageAccountKey = Environment.GetEnvironmentVariable("BsnakeStorageAccountKey");
+    private static readonly string StorageAccountKey = Environment.GetEnvironmentVariable("BsnakeStorageAccountKey") ?? string.Empty;
     
     private readonly ILogger<HighScoreController> _logger;
     private readonly TableServiceClient serviceClient;
