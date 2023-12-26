@@ -106,7 +106,7 @@
 
         if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))
         {
-            Game.Update();
+            await Game.Update();
             LastGameTick = DateTimeOffset.Now;
         }
 
