@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
@@ -21,7 +22,6 @@ namespace SnakeLib
 
 
 		private HighScoreRepository repo = HighScoreRepository.Instance;
-		private HttpClient httpClient = new HttpClient();
 		private IEnumerable<HighScore> highScores;
 
 		public SnakeGame()
@@ -94,12 +94,11 @@ namespace SnakeLib
 			}
         }
 
-        public async ValueTask Update()
+        public async Task Update()
 		{
 			if (GameState == GameState.Initializing)
 			{
-				IEnumerable<HighScore> snakeScores = await httpClient.GetFromJsonAsync<IEnumerable<HighScore>>("http://snakescores.azurewebsites.net/highscore/gethighscores");
-				highScores = snakeScores;
+				await this.LoadHighScores();
 				GameState = GameState.InProgress;
 			}
 
@@ -121,6 +120,11 @@ namespace SnakeLib
 		public IEnumerable<HighScore> GetHighScores()
 		{
 			return highScores;
+		}
+
+		private async Task LoadHighScores()
+		{
+			this.highScores = await repo.GetHighScores();
 		}
 
 		private void GoHighScoresIfNeeded()

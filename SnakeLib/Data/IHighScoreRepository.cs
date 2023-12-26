@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SnakeLib.Contracts;
 
 namespace SnakeLib.Data
@@ -7,6 +8,6 @@ namespace SnakeLib.Data
 
     public interface IHighScoreRepository
     {
-        IEnumerable<HighScore> GetHighScores();
+        Task<IEnumerable<HighScore>> GetHighScores();
     }
 }
