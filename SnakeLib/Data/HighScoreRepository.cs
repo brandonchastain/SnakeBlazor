@@ -12,17 +12,17 @@ namespace SnakeLib.Data
 
     public class HighScoreRepository : IHighScoreRepository
     {
-        public static HighScoreRepository Instance = new HighScoreRepository();
-		private HttpClient httpClient = new HttpClient();
-
-        private HighScoreRepository()
+        private HttpClient httpClient;
+        public HighScoreRepository(IHttpClientFactory clientFactory)
         {
+            this.httpClient = clientFactory.CreateClient();
         }
         
         public async Task<IEnumerable<HighScore>> GetHighScores()
         {			
             var scores = await httpClient.GetFromJsonAsync<IEnumerable<HighScore>>("https://snakescores.azurewebsites.net/highscore/");
             return scores;
+            //return new List<HighScore>(){ new HighScore() };
         }
 
         public void SaveHighScores(IEnumerable<HighScore> scores)

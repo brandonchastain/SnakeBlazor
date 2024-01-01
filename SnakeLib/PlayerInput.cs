@@ -1,26 +1,32 @@
 ﻿using System;
 namespace SnakeLib
 {
-    public class PlayerInput
+    public class PlayerInput : IPlayerInput
     {
         private Direction currentDirection;
+
+        private bool EscapePressed;
+        private bool EnterPressed;
+        private bool HPressed;
 
         public PlayerInput()
         {
             currentDirection = Direction.Down;
         }
 
-        public bool EscapePressed;
-        public bool EnterPressed;
-        public bool HPressed;
-
         public void SetEnterPressed()
         {
             this.EnterPressed = true;
         }
+
         public void SetEscapePressed()
         {
             this.EscapePressed = true;
+        }
+
+        public void SetHPressed()
+        {
+            this.HPressed = true;
         }
 
         public bool GetEscapePressed()

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SnakeLib.Contracts;
 using SnakeLib.Data;
 
@@ -16,20 +17,24 @@ namespace SnakeLib
 		public static int Width = 400;
         private const int SegSize = SnakeSegment.RectSize;
 
-		public readonly PlayerInput playerInput;
+		public readonly IPlayerInput playerInput;
 
 		private GameState prevState;
 
 
-		private HighScoreRepository repo = HighScoreRepository.Instance;
+		private IHighScoreRepository repo;
 		private IEnumerable<HighScore> highScores;
+		private Task loadTask;
+		private ILogger<SnakeGame> logger;
 
-		public SnakeGame()
+		public SnakeGame(ILogger<SnakeGame> logger, IHighScoreRepository highScoreRepository, IPlayerInput playerInput = null)
 		{
 			Food = new Food(4 * SegSize, 4 * SegSize);
-			playerInput = new PlayerInput();
+			this.playerInput = playerInput ?? new PlayerInput();
+			this.repo = highScoreRepository;
 			Snake = BuildNewSnake();
 			highScores = new List<HighScore>();
+			this.logger = logger;
 		}
 
 		public GameState GameState { get; private set; } = GameState.NotStarted;
@@ -94,11 +99,14 @@ namespace SnakeLib
 			}
         }
 
-        public async Task Update()
+        public void Update()
 		{
 			if (GameState == GameState.Initializing)
 			{
-				await this.LoadHighScores();
+				Console.WriteLine("Init");
+				this.logger.LogInformation("Initializing");
+				this.loadTask = this.LoadHighScores();
+				this.logger.LogInformation("load task started.");
 				GameState = GameState.InProgress;
 			}
 

@@ -6,6 +6,8 @@
 @using SnakeLib.Contracts
 @using SnakeLib.Data
 @inject IJSRuntime JsRuntime;
+@inject ILogger<SnakeGame> logger;
+@inject IHttpClientFactory ClientFactory;
 
 <div 
     id="brandonContainer"
@@ -23,7 +25,7 @@
     // Todo: move logic back into Game class
     private const int InitialGameSpeed = 160;
     private int gameSpeed = InitialGameSpeed;
-    private SnakeGame Game = new SnakeGame();
+    private SnakeGame Game;
     private SnakeGameBlazorDrawer Drawer;
     private bool forceRenderOnce;
 
@@ -35,6 +37,11 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (Game == null)
+        {
+            var repo = new HighScoreRepository(ClientFactory);
+            Game = new SnakeGame(logger, repo);
+        }
         this.ctx = await _canvasReference.CreateCanvas2DAsync();
         await JsRuntime.InvokeAsync<object>("initRenderJS", DotNetObjectReference.Create(this));
         await base.OnInitializedAsync();
@@ -106,7 +113,7 @@
 
         if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))
         {
-            await Game.Update();
+            Game.Update();
             LastGameTick = DateTimeOffset.Now;
         }
 
