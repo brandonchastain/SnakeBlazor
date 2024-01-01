@@ -2,6 +2,7 @@
 using SnakeLib.Contracts;
 using SnakeLib.Data;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -102,14 +103,24 @@ namespace SnakeLib
             await context.SetFillStyleAsync("white");
             await context.SetFontAsync("bold 48px Helvetica");
 			IEnumerable<HighScore> scores = game.GetHighScores();
-            await context.FillTextAsync("HIGH SCORES", 100, 100);
+			
 			int y = 100;
-			foreach (var score in scores)
-			{
-				y += 50;
-				await context.FillTextAsync($"{score.Username} - {score.Score}", 100, y);
-			}
+            await context.FillTextAsync("HIGH SCORES", 100, y);
+
 			y += 50;
+			if (scores.Count() > 0)
+			{
+				foreach (var score in scores)
+				{
+					await context.FillTextAsync($"{score.Username} - {score.Score}", 100, y);
+					y += 50;
+				}
+			}
+			else
+			{
+				await context.FillTextAsync("Loading...", 100, y);
+				y += 50;
+			}
             await context.FillTextAsync($"YOU - {game.Snake.Size}", 100, y);
         }
     }

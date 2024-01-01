@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using SnakeLib;
+using SnakeLib.Data;
 namespace SnakeLibTests;
 
 [TestClass]
@@ -10,35 +11,50 @@ public class SnakeGameTests
     public void Game_State_Is_NotStarted_After_Ctor()
     {
         var logger = new Mock<ILogger<SnakeGame>>().Object;
-        var factory = new Mock<IHttpClientFactory>().Object;
-        var game = new SnakeGame(logger);
+        var client = this.GetHttpClient();
+        var game = new SnakeGame(logger, new HighScoreRepository(client));
         
         Assert.IsTrue(game.GameState == GameState.NotStarted);
     }
 
     [TestMethod]
-    public void Game_State_Is_Initializing_After_First_Update()
+    public void Game_State_Is_InProgress_After_Pressing_Enter()
     {
         var logger = new Mock<ILogger<SnakeGame>>().Object;
-        
-        bool hPressed = false;
-        bool enterPressed = true;
         var playerInput = new Mock<IPlayerInput>();
-        playerInput.Setup(p => p.GetHPressed()).Returns(() => hPressed);
-        playerInput.Setup(p => p.GetEnterPressed()).Returns(() => enterPressed);
 
-        var factory = new Mock<IHttpClientFactory>().Object;
-        var game = new SnakeGame(logger, new HighScoreRepository(factory)m playerInput.Object);
+        // simulate user input
+        playerInput.Setup(p => p.GetEnterPressed()).Returns(true);
+
+        var client = this.GetHttpClient();
+        var game = new SnakeGame(logger, new HighScoreRepository(client), playerInput.Object);
+
         Assert.IsTrue(game.GameState == GameState.NotStarted);
 
         game.ReadPlayerInput();
-        //game.Update();
-        Assert.IsTrue(game.GameState == GameState.Initializing);
+        Assert.IsTrue(game.GameState == GameState.InProgress);
+    }
 
-        enterPressed = false;
-        hPressed = true;
+    [TestMethod]
+    public void Game_State_Is_HighScores_After_Pressing_H()
+    {
+        var logger = new Mock<ILogger<SnakeGame>>().Object;
+        var playerInput = new Mock<IPlayerInput>();
+
+        // simulate user input
+        playerInput.Setup(p => p.GetHPressed()).Returns(true);
+
+        var client = this.GetHttpClient();
+        var game = new SnakeGame(logger, new HighScoreRepository(client), playerInput.Object);
+
         game.ReadPlayerInput();
-        game.Update();
         Assert.IsTrue(game.GameState == GameState.HighScores);
+    }
+
+    private HttpClient GetHttpClient()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://snakescores.azurewebsites.net/highscore/");
+        return client;
     }
 }

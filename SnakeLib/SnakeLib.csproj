@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Microsoft.Maui.Dependencies" Version="6.0.540" />
     <PackageReference Include="Microsoft.Maui.Extensions" Version="6.0.540" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>

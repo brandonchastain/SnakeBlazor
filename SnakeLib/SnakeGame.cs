@@ -101,13 +101,9 @@ namespace SnakeLib
 
         public void Update()
 		{
-			if (GameState == GameState.Initializing)
+			if (GameState == GameState.HighScores)
 			{
-				Console.WriteLine("Init");
-				this.logger.LogInformation("Initializing");
-				this.loadTask = this.LoadHighScores();
-				this.logger.LogInformation("load task started.");
-				GameState = GameState.InProgress;
+				return;
 			}
 
             if (GameState != GameState.InProgress) return;
@@ -141,6 +137,7 @@ namespace SnakeLib
             {
 				prevState = GameState;
                 GameState = GameState.HighScores;
+				this.loadTask = this.LoadHighScores();
             }
 			else if (GameState == GameState.HighScores)
 			{
@@ -167,12 +164,6 @@ namespace SnakeLib
 
 		private void GoInProgressIfNeeded()
 		{
-			if (GameState == GameState.NotStarted)
-			{
-				GameState = GameState.Initializing;
-				return;
-			}
-
 			if (GameState == GameState.InProgress)
 			{
 				return;

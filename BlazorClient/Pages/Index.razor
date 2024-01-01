@@ -39,7 +39,7 @@
     {
         if (Game == null)
         {
-            var repo = new HighScoreRepository(ClientFactory);
+            var repo = new HighScoreRepository(ClientFactory.CreateClient("https://snakescores.azurewebsites.net/highscore/"));
             Game = new SnakeGame(logger, repo);
         }
         this.ctx = await _canvasReference.CreateCanvas2DAsync();

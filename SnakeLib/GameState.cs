@@ -9,7 +9,6 @@ namespace SnakeLib
 	public enum GameState
 	{
 		NotStarted,
-		Initializing,
 		InProgress,
 		Paused,
 		HighScores,

@@ -29,7 +29,7 @@ public class HighScoreController : ControllerBase
         tableClient = serviceClient.GetTableClient("HighScores");
     }
 
-    [HttpGet(Name = "GetHighScores")]
+    [HttpGet]
     public IEnumerable<HighScore> Get()
     {
         Pageable<HighScore> queryResultsFilter = tableClient.Query<HighScore>();
@@ -41,5 +41,11 @@ public class HighScoreController : ControllerBase
         }
 
         return res;
+    }
+
+    [HttpPost]
+    public void Post(HighScore newHighScore)
+    {
+        tableClient.AddEntity(newHighScore);
     }
 }
