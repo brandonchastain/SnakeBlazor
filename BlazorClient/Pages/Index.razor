@@ -7,7 +7,7 @@
 @using SnakeLib.Data
 @inject IJSRuntime JsRuntime;
 @inject ILogger<SnakeGame> logger;
-@inject IHttpClientFactory ClientFactory;
+@inject HttpClient Client;
 
 <div 
     id="brandonContainer"
@@ -39,7 +39,7 @@
     {
         if (Game == null)
         {
-            var repo = new HighScoreRepository(ClientFactory.CreateClient("https://snakescores.azurewebsites.net/highscore/"));
+            var repo = new HighScoreRepository(logger, Client);
             Game = new SnakeGame(logger, repo);
         }
         this.ctx = await _canvasReference.CreateCanvas2DAsync();

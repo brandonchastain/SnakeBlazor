@@ -101,11 +101,6 @@ namespace SnakeLib
 
         public void Update()
 		{
-			if (GameState == GameState.HighScores)
-			{
-				return;
-			}
-
             if (GameState != GameState.InProgress) return;
 			//in-progress
 
@@ -123,21 +118,27 @@ namespace SnakeLib
 
 		public IEnumerable<HighScore> GetHighScores()
 		{
+			if (this.loadTask == null)
+			{
+				this.loadTask = this.LoadHighScores();
+			}
 			return highScores;
 		}
 
 		private async Task LoadHighScores()
 		{
+			logger.LogInformation("Loading high scores...");
 			this.highScores = await repo.GetHighScores();
+			logger.LogInformation("Loaded high scores.");
 		}
 
-		private void GoHighScoresIfNeeded()
+		private  void GoHighScoresIfNeeded()
 		{
             if (GameState == GameState.NotStarted || GameState == GameState.InProgress)
             {
+				logger.LogInformation("Going to high scores");
 				prevState = GameState;
                 GameState = GameState.HighScores;
-				this.loadTask = this.LoadHighScores();
             }
 			else if (GameState == GameState.HighScores)
 			{

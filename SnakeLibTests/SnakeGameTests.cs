@@ -12,7 +12,7 @@ public class SnakeGameTests
     {
         var logger = new Mock<ILogger<SnakeGame>>().Object;
         var client = this.GetHttpClient();
-        var game = new SnakeGame(logger, new HighScoreRepository(client));
+        var game = new SnakeGame(logger, new HighScoreRepository(logger, client));
         
         Assert.IsTrue(game.GameState == GameState.NotStarted);
     }
@@ -27,7 +27,7 @@ public class SnakeGameTests
         playerInput.Setup(p => p.GetEnterPressed()).Returns(true);
 
         var client = this.GetHttpClient();
-        var game = new SnakeGame(logger, new HighScoreRepository(client), playerInput.Object);
+        var game = new SnakeGame(logger, new HighScoreRepository(logger, client), playerInput.Object);
 
         Assert.IsTrue(game.GameState == GameState.NotStarted);
 
@@ -45,7 +45,7 @@ public class SnakeGameTests
         playerInput.Setup(p => p.GetHPressed()).Returns(true);
 
         var client = this.GetHttpClient();
-        var game = new SnakeGame(logger, new HighScoreRepository(client), playerInput.Object);
+        var game = new SnakeGame(logger, new HighScoreRepository(logger, client), playerInput.Object);
 
         game.ReadPlayerInput();
         Assert.IsTrue(game.GameState == GameState.HighScores);

@@ -8,6 +8,8 @@ using System.Net.Http.Json;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using SnakeLib;
 
 namespace SnakeLib.Data
 {
@@ -15,19 +17,26 @@ namespace SnakeLib.Data
     public class HighScoreRepository : IHighScoreRepository
     {
         private HttpClient httpClient;
-        public HighScoreRepository(HttpClient client)
+        private ILogger<SnakeGame> logger;
+
+        public HighScoreRepository(ILogger<SnakeGame> logger, HttpClient client)
         {
+            this.logger = logger;
             this.httpClient = client;
         }
         
         public async Task<IEnumerable<HighScore>> GetHighScores()
-        {			
+        {
+            logger.LogInformation("Sending request...");
             var response = await httpClient.GetAsync("");
+
+            logger.LogInformation("Reading response...");
             var jsonString = await response.Content.ReadAsStringAsync();
+            logger.LogInformation("Parsing json...");
             return JsonConvert.DeserializeObject<IEnumerable<HighScore>>(jsonString);
         }
 
-        public async void SaveHighScore(HighScore newHighScore)
+        public async Task SaveHighScore(HighScore newHighScore)
         {
             await httpClient.PostAsJsonAsync("", newHighScore, CancellationToken.None);
         }

@@ -9,6 +9,6 @@ namespace SnakeLib.Data
     public interface IHighScoreRepository
     {
         Task<IEnumerable<HighScore>> GetHighScores();
-        void SaveHighScore(HighScore newHighScore);
+        Task SaveHighScore(HighScore newHighScore);
     }
 }
