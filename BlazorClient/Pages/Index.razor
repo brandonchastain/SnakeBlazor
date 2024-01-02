@@ -18,7 +18,7 @@
 
     <div id="canvasHolder" style="position: fixed; background-color: black; width: 100%; height: 100%" >
         <BECanvas Width="600" Height="400" @ref="_canvasReference"></BECanvas>
-        <input type="text" max="3" id="nameInput" style="position: absolute; top: 30px; left: 50px; display: none;" @bind="userName" />
+        <input type="text" maxlength="3" id="nameInput" style="position: absolute; top: 30px; left: 50px; display: none;" @bind="userName" />
         <button @onclick="SaveHighScore" id="submitButton" style="position: absolute; top: 60px; left: 50px; display: none;">Submit</button>
     </div>
 
