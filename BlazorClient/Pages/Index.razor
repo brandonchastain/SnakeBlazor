@@ -2,12 +2,13 @@
 
 @using Blazor.Extensions
 @using Blazor.Extensions.Canvas.Canvas2D
+@using Microsoft.JSInterop
 @using SnakeLib
 @using SnakeLib.Contracts
 @using SnakeLib.Data
-@inject IJSRuntime JsRuntime;
-@inject ILogger<SnakeGame> logger;
-@inject HttpClient Client;
+@inject IJSRuntime JsRuntime
+@inject ILogger<SnakeGame> logger
+@inject HttpClient Client
 
 <div 
     id="brandonContainer"
@@ -17,23 +18,22 @@
 
     <div id="canvasHolder" style="position: fixed; background-color: black; width: 100%; height: 100%" >
         <BECanvas Width="600" Height="400" @ref="_canvasReference"></BECanvas>
+        <input type="text" max="3" id="nameInput" style="position: absolute; top: 30px; left: 50px; display: none;" @bind="userName" />
+        <button @onclick="SaveHighScore" id="submitButton" style="position: absolute; top: 60px; left: 50px; display: none;">Submit</button>
     </div>
 
 </div>
 
 @code{
-    // Todo: move logic back into Game class
-    private const int InitialGameSpeed = 160;
-    private int gameSpeed = InitialGameSpeed;
     private SnakeGame Game;
     private SnakeGameBlazorDrawer Drawer;
     private bool forceRenderOnce;
-
     private Canvas2DContext ctx;
     protected BECanvasComponent _canvasReference;
-
-    private DateTimeOffset LastGameTick;
     private DateTimeOffset LastRender;
+
+    private string userName = "";
+    private bool showInput = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -42,6 +42,7 @@
             var repo = new HighScoreRepository(logger, Client);
             Game = new SnakeGame(logger, repo);
         }
+
         this.ctx = await _canvasReference.CreateCanvas2DAsync();
         await JsRuntime.InvokeAsync<object>("initRenderJS", DotNetObjectReference.Create(this));
         await base.OnInitializedAsync();
@@ -50,22 +51,32 @@
         {
             Drawer = new SnakeGameBlazorDrawer(Game);
         }
-
-        //Game.Run(); // multithreading is not supported in Blazor! :O
+        
+        if (showInput)
+        {
+            // JavaScript to focus on the input field
+            await JsRuntime.InvokeVoidAsync("eval", "document.getElementById('nameInput').style.display = 'block'; document.getElementById('nameInput').focus();");
+            await JsRuntime.InvokeVoidAsync("eval", "document.getElementById('submitButton').style.display = 'block';");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("eval", "document.getElementById('nameInput').style.display = 'none';");
+            await JsRuntime.InvokeVoidAsync("eval", "document.getElementById('submitButton').style.display = 'none';");
+        }
     }
 
     public void OnKeyDown(KeyboardEventArgs e)
     {
-        // Todo: move logic back into Game class
         Game.playerInput.OnKeyDown(e.Code);
-
         forceRenderOnce = true;
-
     }
 
     public void Clicked()
     {
-        // Todo: move logic back into Game class
+        if (showInput)
+        {
+            return;
+        }
         Game.playerInput.SetEnterPressed();
     }
 
@@ -74,12 +85,8 @@
     {
         Game.playerInput.OnKeyDown("ArrowLeft");
         forceRenderOnce = true;
-        // Todo: move logic back into Game class
-        // Game.handlePlayerKey("ArrowLeft");
-        // -> in handlePlayerKey:
-        //    this.playerInput.OnKeyDown("arrowLeft");
-        //    forceRenderOnce = true
     }
+
     [JSInvokable]
     public void LeftSwipe()
     {
@@ -105,25 +112,39 @@
     [JSInvokable]
     public void ResizeInBlazor(double width, double height) => Game.Resize((int)width, (int)height);
 
+    public async Task SaveHighScore()
+    {
+        var score = new HighScore()
+        {
+            Username = userName,
+            Score = Game.Score
+        };
+        Game.SaveHighScore(score);
+
+        showInput = false;
+    }
+
     [JSInvokable]
     public async ValueTask RenderInBlazor(float timeStamp)
     {
-        // Todo: move logic back into Game class
-        Game.ReadPlayerInput();
-
-        if (DateTimeOffset.Now - LastGameTick > TimeSpan.FromMilliseconds(gameSpeed))
+        if (showInput)
         {
-            Game.Update();
-            LastGameTick = DateTimeOffset.Now;
+            return;
         }
 
-        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(gameSpeed / 2))
+        Game.Tick();
+
+        if (Game.GameState == GameState.GameOver)
+        {
+            showInput = true;
+            StateHasChanged();
+        }
+
+        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
         {
             await this.ctx.BeginBatchAsync();
             await Drawer.Draw(this.ctx);
             await this.ctx.EndBatchAsync();
-
-            double fps = 1.0 / (DateTimeOffset.Now - LastRender).TotalSeconds;
 
             if (!forceRenderOnce)
             {

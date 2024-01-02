@@ -9,7 +9,7 @@ namespace SnakeLib
 	public class Snake : ICanvasDrawable
 	{
 		private const int SegSize = SnakeSegment.RectSize;
-		private IList<SnakeSegment> parts = new List<SnakeSegment>();
+		private LinkedList<SnakeSegment> parts = new LinkedList<SnakeSegment>();
 		private Direction Direction = Direction.Left;
 		private Random random = new Random();
 		private ISet<(int, int)> snakeBody = new HashSet<(int, int)>();
@@ -44,15 +44,15 @@ namespace SnakeLib
 		public void Add(int x, int y)
 		{
 			snakeBody.Add((x, y));
-			parts.Insert(0, new SnakeSegment(x, y));
+			parts.AddFirst(new SnakeSegment(x, y));
 			Size++;
 		}
 
 		public void RemoveTail()
 		{
-			var seg = parts[Size - 1];
+			var seg = parts.Last.ValueRef;
 			snakeBody.Remove((seg.x, seg.y));
-			parts.RemoveAt(Size - 1);
+			parts.RemoveLast();
 			Size--;
 		}
 
@@ -67,13 +67,13 @@ namespace SnakeLib
 			// check if snake will consume food
 			// add snake head, remove old tail (unless sized increased due to consuming food)
 			bool match = false;
-			int nextX = parts[0].x;
-			int nextY = parts[0].y;
+			int nextX = parts.First.ValueRef.x;
+			int nextY = parts.First.ValueRef.y;
 
 			switch (Direction)
 			{
 				case Direction.Right:
-                    nextX = parts[0].x + SegSize;
+                    nextX = parts.First.ValueRef.x + SegSize;
                     if (nextX >= SnakeGame.Width)
 					{
 						nextX = 0;
@@ -81,7 +81,7 @@ namespace SnakeLib
 
 					break;
 				case Direction.Left:
-                    nextX = parts[0].x - SegSize;
+                    nextX = parts.First.ValueRef.x - SegSize;
                     if (nextX < 0)
 					{
 						nextX = (SnakeGame.Width / SegSize) * SegSize;
@@ -90,7 +90,7 @@ namespace SnakeLib
 					break;
 				case Direction.Up:
 
-                    nextY = parts[0].y - SegSize;
+                    nextY = parts.First.ValueRef.y - SegSize;
                     if (nextY < 0)
 					{
 						nextY = (SnakeGame.Height / SegSize) * SegSize;
@@ -98,7 +98,7 @@ namespace SnakeLib
 					break;
 				case Direction.Down:
 
-                    nextY = parts[0].y + SegSize;
+                    nextY = parts.First.ValueRef.y + SegSize;
                     if (nextY >= SnakeGame.Height)
 					{
 						nextY = 0;

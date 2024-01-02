@@ -13,19 +13,20 @@ namespace SnakeLib
 {
 	public class SnakeGame
 	{
+        private const int SegSize = SnakeSegment.RectSize;
+    	private const int InitialGameSpeed = 160;
+
 		public static int Height = 400;
 		public static int Width = 400;
-        private const int SegSize = SnakeSegment.RectSize;
-
+    	public static int GameSpeed = InitialGameSpeed;
 		public readonly IPlayerInput playerInput;
 
 		private GameState prevState;
-
-
 		private IHighScoreRepository repo;
 		private IEnumerable<HighScore> highScores;
 		private Task loadTask;
 		private ILogger<SnakeGame> logger;
+    	private DateTimeOffset lastGameTick;
 
 		public SnakeGame(ILogger<SnakeGame> logger, IHighScoreRepository highScoreRepository, IPlayerInput playerInput = null)
 		{
@@ -41,19 +42,6 @@ namespace SnakeLib
 		public Snake Snake { get; private set; }
 		public Food Food { get; private set; }
 		public int Score => Snake.Size;
-
-		// Blazor webassembly does not support multithreading!
-		//public void Run()
-		//{
-		//	Task.Run(() =>
-		//	{
-		//		while (true)
-		//		{
-		//			Update();
-		//			Thread.Sleep(delay);
-		//		}
-		//	});
-		//}
 
 		private Snake BuildNewSnake()
 		{
@@ -99,10 +87,23 @@ namespace SnakeLib
 			}
         }
 
-        public void Update()
+        public void Tick()
 		{
-            if (GameState != GameState.InProgress) return;
-			//in-progress
+			ReadPlayerInput();
+
+			if (DateTimeOffset.Now - lastGameTick > TimeSpan.FromMilliseconds(GameSpeed))
+			{
+				Update();
+				lastGameTick = DateTimeOffset.Now;
+			}
+		}
+
+		public void Update()
+		{
+            if (GameState != GameState.InProgress)
+			{
+				return;
+			}
 
             // check user input for next direction
             Snake.SetDirection(playerInput.GetPlayerDirection());
@@ -112,8 +113,6 @@ namespace SnakeLib
 			{
 				GameState = GameState.GameOver;
 			}
-
-			//delay = StartingDelay - Math.Min(StartingDelay - 1, (int)(Snake.Size * SpeedMultiplier));
 		}
 
 		public IEnumerable<HighScore> GetHighScores()
@@ -123,6 +122,11 @@ namespace SnakeLib
 				this.loadTask = this.LoadHighScores();
 			}
 			return highScores;
+		}
+
+		public async Task SaveHighScore(HighScore score)
+		{
+			await this.repo.SaveHighScore(score);
 		}
 
 		private async Task LoadHighScores()

@@ -20,7 +20,6 @@ public class HighScoreController : ControllerBase
     public HighScoreController(ILogger<HighScoreController> logger)
     {
         _logger = logger;
-        // Construct a new "TableServiceClient using a TableSharedKeyCredential.
 
         serviceClient = new TableServiceClient(
             new Uri(StorageUri),
@@ -44,8 +43,9 @@ public class HighScoreController : ControllerBase
     }
 
     [HttpPost]
-    public void Post(HighScore newHighScore)
+    public ActionResult<HighScore> Post(HighScore newHighScore)
     {
         tableClient.AddEntity(newHighScore);
+        return Ok();
     }
 }

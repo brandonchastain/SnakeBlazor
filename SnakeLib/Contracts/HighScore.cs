@@ -7,6 +7,17 @@ namespace SnakeLib.Contracts
     
     public class HighScore : ITableEntity
     {
+        public HighScore()
+            : this(string.Empty, Guid.NewGuid().ToString())
+        {
+        }
+        
+        public HighScore(string partitionKey, string rowKey)
+        {
+            this.PartitionKey = partitionKey;
+            this.RowKey = rowKey;
+        }
+
         public string Username { get; set; }
         public int Score { get; set; }
         public string PartitionKey { get; set; }

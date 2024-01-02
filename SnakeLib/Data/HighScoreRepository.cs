@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Http;
 using SnakeLib.Contracts;
 using System.Net.Http.Json;
+using System.Linq;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,13 +28,10 @@ namespace SnakeLib.Data
         
         public async Task<IEnumerable<HighScore>> GetHighScores()
         {
-            logger.LogInformation("Sending request...");
             var response = await httpClient.GetAsync("");
-
-            logger.LogInformation("Reading response...");
             var jsonString = await response.Content.ReadAsStringAsync();
-            logger.LogInformation("Parsing json...");
-            return JsonConvert.DeserializeObject<IEnumerable<HighScore>>(jsonString);
+            var scores = JsonConvert.DeserializeObject<IEnumerable<HighScore>>(jsonString);
+            return scores.OrderByDescending(s => s.Score).Take(5);
         }
 
         public async Task SaveHighScore(HighScore newHighScore)
