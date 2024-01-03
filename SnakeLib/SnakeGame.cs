@@ -136,7 +136,7 @@ namespace SnakeLib
 			logger.LogInformation("Loaded high scores.");
 		}
 
-		private  void GoHighScoresIfNeeded()
+		public void GoHighScoresIfNeeded()
 		{
             if (GameState == GameState.NotStarted || GameState == GameState.InProgress)
             {

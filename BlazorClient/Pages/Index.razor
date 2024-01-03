@@ -24,7 +24,7 @@
 
 </div>
 
-@code{
+@code {
     private SnakeGame Game;
     private SnakeGameBlazorDrawer Drawer;
     private bool forceRenderOnce;
@@ -71,12 +71,23 @@
         forceRenderOnce = true;
     }
 
-    public void Clicked()
+    public void Clicked(MouseEventArgs e)
     {
         if (showInput)
         {
             return;
         }
+
+        if (Game.GameState == GameState.NotStarted 
+            && e.OffsetX < SnakeGame.Width 
+            && e.OffsetY < SnakeGame.Height 
+            && e.OffsetX >= SnakeGame.Width - 700
+            && e.OffsetY >= SnakeGame.Height - 100)
+        {
+            Game.GoHighScoresIfNeeded();
+            return;
+        }
+
         Game.playerInput.SetEnterPressed();
     }
 
