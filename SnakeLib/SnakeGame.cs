@@ -87,7 +87,7 @@ namespace SnakeLib
 			}
         }
 
-        public void Tick(DateTime ts)
+        public void Tick(DateTimeOffset ts)
 		{
 			ReadPlayerInput();
 
