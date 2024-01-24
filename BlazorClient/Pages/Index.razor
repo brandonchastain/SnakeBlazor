@@ -136,12 +136,14 @@
     }
 
     [JSInvokable]
-    public async ValueTask RenderInBlazor(DateTime timeStamp)
+    public async ValueTask RenderInBlazor(float ts)
     {
         if (showInput)
         {
             return;
         }
+
+				var timeStamp = DateTimeOffset.FromUnixTimeMilliseconds(ts).DateTime;
 
 				// render
 				if (forceRenderOnce || timeStamp - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
