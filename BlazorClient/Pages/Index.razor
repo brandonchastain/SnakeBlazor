@@ -143,7 +143,7 @@
             return;
         }
 
-				var timeStamp = DateTimeOffset.FromUnixTimeMilliseconds(ts).DateTime;
+				var timeStamp = DateTimeOffset.FromUnixTimeMilliseconds((long)ts).DateTime;
 
 				// render
 				if (forceRenderOnce || timeStamp - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
