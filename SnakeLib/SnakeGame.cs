@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -87,14 +87,14 @@ namespace SnakeLib
 			}
         }
 
-        public void Tick()
+        public void Tick(DateTime ts)
 		{
 			ReadPlayerInput();
 
-			if (DateTimeOffset.Now - lastGameTick > TimeSpan.FromMilliseconds(GameSpeed))
+			if (ts - lastGameTick > TimeSpan.FromMilliseconds(GameSpeed))
 			{
 				Update();
-				lastGameTick = DateTimeOffset.Now;
+				lastGameTick = ts;
 			}
 		}
 
