@@ -23,7 +23,7 @@
     <script>
 
         function renderJS(timeStamp) {
-            theInstance.invokeMethodAsync('RenderInBlazor', timeStamp.toJSON());
+            theInstance.invokeMethodAsync('RenderInBlazor', timeStamp);
             window.requestAnimationFrame(renderJS);
         }
 
