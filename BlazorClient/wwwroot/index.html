@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -23,7 +23,7 @@
     <script>
 
         function renderJS(timeStamp) {
-            theInstance.invokeMethodAsync('RenderInBlazor', timeStamp);
+            theInstance.invokeMethodAsync('RenderInBlazor', timeStamp.toJSON());
             window.requestAnimationFrame(renderJS);
         }
 
