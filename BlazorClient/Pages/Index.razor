@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 
 @using Blazor.Extensions
 @using Blazor.Extensions.Canvas.Canvas2D
@@ -136,13 +136,29 @@
     }
 
     [JSInvokable]
-    public async ValueTask RenderInBlazor(float timeStamp)
+    public async ValueTask RenderInBlazor(DateTime timeStamp)
     {
         if (showInput)
         {
             return;
         }
 
+				// render
+				if (forceRenderOnce || timeStamp - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
+        {
+            await this.ctx.BeginBatchAsync();
+            await Drawer.Draw(this.ctx);
+            await this.ctx.EndBatchAsync();
+
+            if (!forceRenderOnce)
+            {
+                LastRender = timeStamp;
+            }
+
+            forceRenderOnce = false;
+        }
+
+				// update game
         Game.Tick();
 
         if (Game.GameState == GameState.GameOver)
@@ -151,18 +167,6 @@
             StateHasChanged();
         }
 
-        if (forceRenderOnce || DateTimeOffset.Now - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
-        {
-            await this.ctx.BeginBatchAsync();
-            await Drawer.Draw(this.ctx);
-            await this.ctx.EndBatchAsync();
-
-            if (!forceRenderOnce)
-            {
-                LastRender = DateTimeOffset.Now;
-            }
-
-            forceRenderOnce = false;
-        }
+      
     }
 }
