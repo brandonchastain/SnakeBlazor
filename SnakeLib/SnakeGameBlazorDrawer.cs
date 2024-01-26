@@ -1,4 +1,4 @@
-﻿using Blazor.Extensions.Canvas.Canvas2D;
+using Blazor.Extensions.Canvas.Canvas2D;
 using SnakeLib.Contracts;
 using SnakeLib.Data;
 using System;
@@ -112,7 +112,7 @@ namespace SnakeLib
 			{
 				foreach (var score in scores)
 				{
-					await context.FillTextAsync($"{score.Username} - {score.Score}", 100, y);
+					await context.FillTextAsync($"{score.Username}\t{score.Score}", 100, y);
 					y += 50;
 				}
 			}
@@ -121,7 +121,10 @@ namespace SnakeLib
 				await context.FillTextAsync("Loading...", 100, y);
 				y += 50;
 			}
-            await context.FillTextAsync($"YOU - {game.Snake.Size}", 100, y);
+            if (game.Snake.Size > 1)
+												{
+																await context.FillTextAsync($"YOUR SCORE\t{game.Snake.Size}", 100, y);
+													}
         }
     }
 }
