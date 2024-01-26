@@ -146,7 +146,7 @@
 				var timeStamp = DateTimeOffset.FromUnixTimeMilliseconds((long)ts).DateTime;
 
 				// render
-				if (forceRenderOnce || timeStamp - LastRender > TimeSpan.FromMilliseconds(SnakeGame.GameSpeed / 2))
+				if (forceRenderOnce || timeStamp - LastRender > TimeSpan.FromMilliseconds(15))
         {
             await this.ctx.BeginBatchAsync();
             await Drawer.Draw(this.ctx);
