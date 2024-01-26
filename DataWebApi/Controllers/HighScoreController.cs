@@ -31,10 +31,10 @@ public class HighScoreController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<HighScore>> Get()
     {
-        Pageable<HighScore> queryResultsFilter = await tableClient.QueryAsync<HighScore>(maxPerPage: 5);
+        var queryResultsFilter = tableClient.QueryAsync<HighScore>(maxPerPage: 5);
         var res = new List<HighScore>();
         // Iterate the <see cref="Pageable"> to access all queried entities.
-        foreach (HighScore score in queryResultsFilter)
+        await foreach (HighScore score in queryResultsFilter)
         {
             res.Add(score);
         }
