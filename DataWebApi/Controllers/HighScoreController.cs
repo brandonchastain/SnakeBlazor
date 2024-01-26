@@ -29,9 +29,9 @@ public class HighScoreController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<HighScore> Get()
+    public async Task<IEnumerable<HighScore>> Get()
     {
-        Pageable<HighScore> queryResultsFilter = tableClient.Query<HighScore>();
+        Pageable<HighScore> queryResultsFilter = await tableClient.QueryAsync<HighScore>(maxPerPage: 5);
         var res = new List<HighScore>();
         // Iterate the <see cref="Pageable"> to access all queried entities.
         foreach (HighScore score in queryResultsFilter)
